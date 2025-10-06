@@ -7,17 +7,18 @@
 # Output: 3
 
 def most_frequent(numbers):
-    # Your code here
+    return Counter(numbers).most_common(1)[0][0]
+
     pass
 
 """
 Time and Space Analysis for problem 1:
-- Best-case:
-- Worst-case:
-- Average-case:
-- Space complexity:
-- Why this approach?
-- Could it be optimized?
+- Best-case: O(n) — one pass to count frequencies
+- Worst-case: O(n) — same as best, since all elements must be counted
+- Average-case: O(n)
+- Space complexity: O(n) — storing frequency of each unique element
+- Why this approach? Counter is optimized for frequency counting and provides direct access to the most common element
+- Could it be optimized? Only marginally; a manual dictionary approach avoids importing but doesn't improve complexity
 """
 
 
@@ -29,18 +30,21 @@ Time and Space Analysis for problem 1:
 # Output: [4, 5, 6, 7]
 
 def remove_duplicates(nums):
-    # Your code here
+    seen = set()
+    return [x for x in nums if not (x in seen or seen.add(x))]
+
     pass
 
 """
 Time and Space Analysis for problem 2:
-- Best-case:
-- Worst-case:
-- Average-case:
-- Space complexity:
-- Why this approach?
-- Could it be optimized?
+- Best-case: O(n) — all elements are unique
+- Worst-case: O(n) — all elements are duplicates except one
+- Average-case: O(n)
+- Space complexity: O(n) — set stores seen elements
+- Why this approach? Efficient and Pythonic; avoids nested loops and preserves order
+- Could it be optimized? Using dict.fromkeys() in Python 3.7+ is slightly faster but less flexible for non-hashable types
 """
+
 
 
 # 🔍 Problem 3: Return All Pairs That Sum to Target
@@ -52,18 +56,27 @@ Time and Space Analysis for problem 2:
 # Output: [(1, 4), (2, 3)]
 
 def find_pairs(nums, target):
-    # Your code here
+    seen = set()
+    pairs = set()
+    for num in nums:
+        complement = target - num
+        if complement in seen:
+            pairs.add(tuple(sorted((num, complement))))
+        seen.add(num)
+    return list(pairs)
+
     pass
 
 """
 Time and Space Analysis for problem 3:
-- Best-case:
-- Worst-case:
-- Average-case:
-- Space complexity:
-- Why this approach?
-- Could it be optimized?
+- Best-case: O(n) — early matches found quickly
+- Worst-case: O(n) — must scan all elements
+- Average-case: O(n)
+- Space complexity: O(n) — storing seen elements and pairs
+- Why this approach? Hashing allows constant-time lookups and avoids nested loops
+- Could it be optimized? Sorting the list and using two pointers gives O(n log n) time but avoids extra space
 """
+
 
 
 # 🔍 Problem 4: Simulate List Resizing (Amortized Cost)
@@ -75,17 +88,32 @@ Time and Space Analysis for problem 3:
 # add_n_items(6) → should print when resizing happens.
 
 def add_n_items(n):
-    # Your code here
+    capacity = 1
+    array = [None] * capacity
+    size = 0
+
+    for i in range(n):
+        if size == capacity:
+            print(f"Resizing from {capacity} to {capacity * 2}")
+            new_array = [None] * (capacity * 2)
+            for j in range(size):
+                new_array[j] = array[j]
+            array = new_array
+            capacity *= 2
+        array[size] = i
+        size += 1
+
     pass
 
 """
 Time and Space Analysis for problem 4:
-- When do resizes happen?
-- What is the worst-case for a single append?
-- What is the amortized time per append overall?
-- Space complexity:
-- Why does doubling reduce the cost overall?
+- When do resizes happen? When size == capacity
+- Worst-case for a single append: O(n) — during resize and copy
+- Amortized time per append overall: O(1)
+- Space complexity: O(n) — final array size is proportional to n
+- Why does doubling reduce the cost overall? Because the number of resizes grows logarithmically, spreading the cost over many appends
 """
+
 
 
 # 🔍 Problem 5: Compute Running Totals
@@ -98,15 +126,21 @@ Time and Space Analysis for problem 4:
 # Because: [1, 1+2, 1+2+3, 1+2+3+4]
 
 def running_total(nums):
-    # Your code here
+    result = []
+    total = 0
+    for num in nums:
+        total += num
+        result.append(total)
+    return result
+
     pass
 
 """
 Time and Space Analysis for problem 5:
-- Best-case:
-- Worst-case:
-- Average-case:
-- Space complexity:
-- Why this approach?
-- Could it be optimized?
+- Best-case: O(n) — single pass through list
+- Worst-case: O(n)
+- Average-case: O(n)
+- Space complexity: O(n) — storing running totals
+- Why this approach? Simple and efficient; avoids recomputation
+- Could it be optimized? In-place modification reduces space to O(1) if mutation is allowed
 """
