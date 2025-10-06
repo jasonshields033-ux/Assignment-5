@@ -180,7 +180,7 @@ def test_most_frequent():
     assert most_frequent([1, 3, 2, 3, 4, 1, 3]) == 3
     assert most_frequent([1, 1, 2, 2]) in [1, 2]  # tie
     assert most_frequent([5]) == 5
-    assert most_frequent([]) == None  # optional: handle empty input gracefully
+    assert most_frequent([]) == None
 
 def test_remove_duplicates():
     assert remove_duplicates([4, 5, 4, 6, 5, 7]) == [4, 5, 6, 7]
