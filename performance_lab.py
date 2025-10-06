@@ -76,8 +76,35 @@ Time and Space Analysis for problem 3:
 - Why this approach? Hashing allows constant-time lookups and avoids nested loops
 - Could it be optimized? Sorting the list and using two pointers gives O(n log n) time but avoids extra space
 """
+# -------------------------------
+# Optimized Version of Problem #3
+# -------------------------------
 
+def find_pairs_optimized(nums, target):
+    nums.sort()
+    left, right = 0, len(nums) - 1
+    pairs = []
 
+    while left < right:
+        total = nums[left] + nums[right]
+        if total == target:
+            pairs.append((nums[left], nums[right]))
+            left += 1
+            right -= 1
+        elif total < target:
+            left += 1
+        else:
+            right -= 1
+    return pairs
+
+"""
+Optimization Comparison:
+- Original used hashing for O(n) time and O(n) space.
+- Optimized version uses sorting and two pointers:
+  - Time: O(n log n) due to sort
+  - Space: O(1) extra space (excluding output)
+- Trade-off: Slightly slower for large inputs, but more memory-efficient.
+"""
 
 # 🔍 Problem 4: Simulate List Resizing (Amortized Cost)
 # Create a function that adds n elements to a list that has a fixed initial capacity.
@@ -144,3 +171,44 @@ Time and Space Analysis for problem 5:
 - Why this approach? Simple and efficient; avoids recomputation
 - Could it be optimized? In-place modification reduces space to O(1) if mutation is allowed
 """
+
+# -------------------------------
+#  Test Cases for All Problems
+# -------------------------------
+
+def test_most_frequent():
+    assert most_frequent([1, 3, 2, 3, 4, 1, 3]) == 3
+    assert most_frequent([1, 1, 2, 2]) in [1, 2]  # tie
+    assert most_frequent([5]) == 5
+    assert most_frequent([]) == None  # optional: handle empty input gracefully
+
+def test_remove_duplicates():
+    assert remove_duplicates([4, 5, 4, 6, 5, 7]) == [4, 5, 6, 7]
+    assert remove_duplicates([]) == []
+    assert remove_duplicates([1, 1, 1, 1]) == [1]
+    assert remove_duplicates([1, 2, 3]) == [1, 2, 3]
+
+def test_find_pairs():
+    assert set(find_pairs([1, 2, 3, 4], 5)) == {(1, 4), (2, 3)}
+    assert set(find_pairs([1, 2, 3], 6)) == set()
+    assert set(find_pairs([], 5)) == set()
+    assert set(find_pairs([0, 5, -5, 10], 5)) == {(0, 5), (-5, 10)}
+
+def test_add_n_items():
+    add_n_items(6)  # should print resizing events
+
+def test_running_total():
+    assert running_total([1, 2, 3, 4]) == [1, 3, 6, 10]
+    assert running_total([]) == []
+    assert running_total([5]) == [5]
+    assert running_total([0, 0, 0]) == [0, 0, 0]
+
+# Run all tests
+test_most_frequent()
+test_remove_duplicates()
+test_find_pairs()
+test_add_n_items()
+test_running_total()
+
+print("✅ All tests passed.")
+
